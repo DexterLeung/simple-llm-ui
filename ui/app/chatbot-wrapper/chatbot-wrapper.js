@@ -121,17 +121,35 @@ export class ChatbotWrapper extends BaseComponent {
     aiMsgWrapper.append(aiMsg);
     this.messageList.append(aiMsgWrapper);
 
-    // Send message.
-    const response = await fetch("http://localhost:8000/chat/stream", {
-      method: "POST",
-      body: JSON.stringify({"input": {
-        "input": submitMessage,
-        "history": historyMessages
-      }}),
-      headers: new Headers({
-        "Content-Type": "application/json"
-      })
-    });
+    /** @type {Response} The Fetch results. */
+    let response;
+    try {
+      // Send message.
+      response = await fetch("http://localhost:8000/chat/stream", {
+        method: "POST",
+        body: JSON.stringify({"input": {
+          "input": submitMessage,
+          "history": historyMessages
+        }}),
+        headers: new Headers({
+          "Content-Type": "application/json"
+        })
+      });
+    } catch (e) {
+      console.error(e);
+      alert("Cannot connect to server.");
+
+      // Remove added messages and put human message back to textarea.
+      this.messageInput.value = userMsg.messageContent;
+      userMsgWrapper.remove();
+      aiMsgWrapper.remove();
+
+      // Re-enable to textarea and submit button.
+      this.messageInput.disabled = false;
+      this.submitButton.disabled = false;
+
+      return;
+    }
 
     // Prepare the SSE message reader and data text decoder..
     const reader = response.body.getReader();
