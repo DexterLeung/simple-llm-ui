@@ -151,6 +151,12 @@ export class ChatbotWrapper extends BaseComponent {
       return;
     }
 
+    // Update scroll.
+    while (!aiMsgWrapper.clientHeight) {
+      await Utils.waitNextFrame();
+    }
+    this.messageList.scrollTop = this.messageList.scrollHeight;
+
     // Prepare the SSE message reader and data text decoder..
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -188,7 +194,7 @@ export class ChatbotWrapper extends BaseComponent {
             msg = streamData;
           }
         } catch (e) {
-          msg = dataContent
+          msg = dataContent;
         }
 
         // If there is message, add to the AI message content.
@@ -199,6 +205,9 @@ export class ChatbotWrapper extends BaseComponent {
             aiMsg.unsetLoading();
           }
           aiMsg.addContent(msg);
+
+          // Update scroll.
+          this.messageList.scrollTop = this.messageList.scrollHeight;
         }
       }
     }
@@ -206,5 +215,8 @@ export class ChatbotWrapper extends BaseComponent {
     // Re-enable to textarea and submit button.
     this.messageInput.disabled = false;
     this.submitButton.disabled = false;
+
+    // Focus again on the textarea.
+    this.messageInput.focus();
   }
 }

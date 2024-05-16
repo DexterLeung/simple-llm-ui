@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+    scroll-behavior: smooth;
 
     > div {
       transition: all ease-out .3s;
@@ -20,6 +21,14 @@
       @starting-style {
         opacity: 0;
         transform: translateX(-.35em);
+      }
+
+      &:first-child {
+        margin-top: auto;
+      }
+
+      &:nth-child(2n + 1) {
+        margin-left: auto;
       }
     }
 

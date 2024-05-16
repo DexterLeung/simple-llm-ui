@@ -11,7 +11,27 @@ export class ChatbotMessage extends BaseComponent {
   }
 
   /** @type {string} The message role. */
-  messageRole;
+  #messageRole;
+
+  set messageRole(role) {
+    this.#messageRole = role;
+    if (this.#wrapperEle) {
+      this.#wrapperEle.dataset.role = role;
+    }
+    if (this.#roleEle) {
+      this.#roleEle.textContent = role;
+    }
+  }
+
+  get messageRole() {
+    return this.#messageRole;
+  }
+
+  /** @type {HTMLDivElement} The wrapper element. */
+  #wrapperEle;
+
+  /** @type {HTMLDivElement} The wrapper element. */
+  #roleEle;
 
   /** @type {string} The message content. */
   messageContent;
@@ -50,8 +70,12 @@ export class ChatbotMessage extends BaseComponent {
   finishLoad() {
     super.finishLoad();
 
-    // Show the message row.
-    this._shadowRoot.querySelector(".message-role").textContent = this.messageRole;
+    // Set the wrapper element and role elements.
+    this.#wrapperEle = this._shadowRoot.querySelector(".wrapper");
+    this.#roleEle = this._shadowRoot.querySelector(".message-role");
+
+    // Update the message role again to apply changes.
+    this.messageRole = this.#messageRole;
 
     // Show the meessage content.
     this.messageContentEle = this._shadowRoot.querySelector(".message-content");
