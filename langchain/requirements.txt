@@ -1,3 +1,4 @@
 fastapi
 langchain
 langserve[all]
+langchain_community
