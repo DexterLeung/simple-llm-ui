@@ -29,7 +29,7 @@ app.add_middleware(
 
 # Create chat chain with history.
 model = ChatOllama(
-    model="llama3"
+    model="llama3.1"
 )
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You're an helpful assistant. Continue the chat with human."),
