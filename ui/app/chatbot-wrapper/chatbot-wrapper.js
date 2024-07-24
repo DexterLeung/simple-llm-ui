@@ -125,7 +125,7 @@ export class ChatbotWrapper extends BaseComponent {
     let response;
     try {
       // Send message.
-      response = await fetch("http://localhost:8000/chat/stream", {
+      response = await fetch("http://localhost:8080/chat/stream", {
         method: "POST",
         body: JSON.stringify({"input": {
           "input": submitMessage,

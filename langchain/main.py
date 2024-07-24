@@ -45,4 +45,4 @@ add_routes(app, chat_chain, path="/chat")
 
 if __name__ == "__main__":
     # Start the server.
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="localhost", port=8080)
